@@ -30,7 +30,7 @@ public class ShorteningController {
 
 	@RequestMapping(value = "/encrypt", method = RequestMethod.POST)
 	@ResponseBody
-	public UrlMappingDto encrypt(@RequestBody String url) throws ShorteningConvertException {
-		return shorteningConverterStrategyService.convert(ConvertType.ENCRYPT, url);
+	public UrlMappingDto encrypt(@RequestBody String originUrl) throws ShorteningConvertException {
+		return shorteningConverterStrategyService.convert(ConvertType.ENCRYPT, originUrl);
 	}
 }
