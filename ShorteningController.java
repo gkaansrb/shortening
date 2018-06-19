@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 public class ShorteningController {
 
@@ -18,10 +20,19 @@ public class ShorteningController {
 		return "main";
 	}
 
-	@RequestMapping(value = "/decrypt", method = RequestMethod.GET)
-	public String decrypt(@RequestParam(value = "shortUrl") String shortUrl) throws ShorteningConvertException {
-		UrlMappingDto convert = shorteningConverter.findByShortUrl(shortUrl);
-		return convert.getOriginUrl();
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@ResponseBody
+	public List<UrlMappingDto> list() {
+		return shorteningConverter.getUrlList();
+	}
+
+	@RequestMapping(value = "/{shortUrl}", method = RequestMethod.GET)
+	public String redirect(@PathVariable String shortUrl) {
+		try {
+			return "redirect://" + shorteningConverter.findByShortUrl(shortUrl).getOriginUrl();
+		} catch (ShorteningConvertException e) {
+			return "error";
+		}
 	}
 
 	@RequestMapping(value = "/encrypt", method = RequestMethod.POST)
